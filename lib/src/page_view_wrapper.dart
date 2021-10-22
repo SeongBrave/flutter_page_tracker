@@ -4,11 +4,10 @@ import 'dart:async';
 import 'tracker_page_mixin.dart';
 import 'page_tracker_aware.dart';
 
-enum PageTrackerEvent {PageView, PageExit}
+enum PageTrackerEvent { PageView, PageExit }
 
 // 包裹在PageView TabView组件之外，用于监听Tab切换事件
 class PageViewWrapper extends StatefulWidget {
-
   final int pageAmount;
   final int initialPage;
   final Widget child;
@@ -20,13 +19,11 @@ class PageViewWrapper extends StatefulWidget {
     this.initialPage = 0,
     this.child,
     this.changeDelegate,
-  }):
-        assert(pageAmount != null),
+  })  : assert(pageAmount != null),
         super(key: key);
 
   @override
   PageViewWrapperState createState() {
-
     return PageViewWrapperState();
   }
 
@@ -34,10 +31,10 @@ class PageViewWrapper extends StatefulWidget {
   static Stream<PageTrackerEvent> of(BuildContext context, int index) {
     try {
       assert(index >= 0);
-      List<Stream<PageTrackerEvent>> broadCaseStreams = (context
-          .ancestorStateOfType(
-          TypeMatcher<PageViewWrapperState>()) as PageViewWrapperState)
-          .broadCaseStreams;
+      List<Stream<PageTrackerEvent>> broadCaseStreams =
+          (context.findAncestorStateOfType<PageViewWrapperState>()
+                  as PageViewWrapperState)
+              .broadCaseStreams;
       assert(index < broadCaseStreams.length);
 
       return broadCaseStreams[index];
@@ -47,8 +44,8 @@ class PageViewWrapper extends StatefulWidget {
   }
 }
 
-class PageViewWrapperState extends State<PageViewWrapper> with PageTrackerAware, TrackerPageMixin {
-
+class PageViewWrapperState extends State<PageViewWrapper>
+    with PageTrackerAware, TrackerPageMixin {
   List<StreamController<PageTrackerEvent>> controllers = [];
   List<Stream<PageTrackerEvent>> broadCaseStreams = [];
   // 上一次打开的Page
@@ -57,12 +54,13 @@ class PageViewWrapperState extends State<PageViewWrapper> with PageTrackerAware,
   StreamSubscription<int> pageChangeSB;
 
   void _createController(int index) {
-    controllers[index] = StreamController<PageTrackerEvent>(sync: true, onCancel: () {
-      _createController(index);
-    });
+    controllers[index] = StreamController<PageTrackerEvent>(
+        sync: true,
+        onCancel: () {
+          _createController(index);
+        });
     broadCaseStreams[index] = controllers[index].stream.asBroadcastStream();
   }
-
 
   @override
   void initState() {
@@ -73,7 +71,7 @@ class PageViewWrapperState extends State<PageViewWrapper> with PageTrackerAware,
     // 创建streams
     controllers = List(widget.pageAmount);
     broadCaseStreams = List(widget.pageAmount);
-    for(int i=0; i<controllers.length; i++) {
+    for (int i = 0; i < controllers.length; i++) {
       _createController(i);
     }
 
@@ -83,7 +81,6 @@ class PageViewWrapperState extends State<PageViewWrapper> with PageTrackerAware,
   }
 
   void _onPageChange(int index) {
-
     if (currPageIndex == index) {
       return;
     }
@@ -131,9 +128,9 @@ class PageViewWrapperState extends State<PageViewWrapper> with PageTrackerAware,
     }
   }
 
-  void _send(int index,PageTrackerEvent event) {
+  void _send(int index, PageTrackerEvent event) {
     if (currPageIndex < controllers.length && index >= 0)
-    controllers[index].add(event);
+      controllers[index].add(event);
   }
 }
 
@@ -164,10 +161,9 @@ abstract class ChangeDelegate {
 }
 
 class PageViewChangeDelegate extends ChangeDelegate {
-
   PageController pageController;
 
-  PageViewChangeDelegate(this.pageController): super();
+  PageViewChangeDelegate(this.pageController) : super();
 
   @override
   void listen() {
@@ -199,7 +195,7 @@ class TabViewChangeDelegate extends ChangeDelegate {
   TabController tabController;
   int lastIndex;
 
-  TabViewChangeDelegate(this.tabController): super();
+  TabViewChangeDelegate(this.tabController) : super();
 
   @override
   void listen() {

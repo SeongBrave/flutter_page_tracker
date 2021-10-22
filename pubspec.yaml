@@ -6,7 +6,7 @@ author: DavidTang <billl89g@gmail.com>
 homepage: https://github.com/SBDavid/flutter_page_tracker
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   flutter:

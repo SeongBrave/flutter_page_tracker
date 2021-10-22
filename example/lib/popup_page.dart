@@ -3,10 +3,9 @@ import 'package:flutter_page_tracker/flutter_page_tracker.dart';
 import 'dart:math';
 
 class PopupPage extends StatelessWidget {
-
   const PopupPage({
     Key key,
-  }): super(key: key);
+  }) : super(key: key);
 
   Widget _button(String text, VoidCallback onTap) {
     return GestureDetector(
@@ -17,8 +16,7 @@ class PopupPage extends StatelessWidget {
           child: Center(
             child: Text(text),
           ),
-        )
-    );
+        ));
   }
 
   @override
@@ -45,17 +43,25 @@ class PopupPage extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     padding: EdgeInsets.all(10),
-                    child: Text("When you show a dialog, only PageView event will be trigged. "),
+                    child: Text(
+                        "When you show a dialog, only PageView event will be trigged. "),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
-                    child: Text("You can see 'dialog didPageView' in the console. "),
+                    child: Text(
+                        "You can see 'dialog didPageView' in the console. "),
                   ),
-                  Container(height: 10,),
-                  _button("Go to anther PageRoute, will not trigger PageExit on this dialog", () {
+                  Container(
+                    height: 10,
+                  ),
+                  _button(
+                      "Go to anther PageRoute, will not trigger PageExit on this dialog",
+                      () {
                     Navigator.of(context).pushNamed("detail");
                   }),
-                  _button("Close dialog, will not trigger PageView on Previous route", () {
+                  _button(
+                      "Close dialog, will not trigger PageView on Previous route",
+                      () {
                     Navigator.of(context).pop();
                   }),
                 ],

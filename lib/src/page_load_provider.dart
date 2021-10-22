@@ -1,14 +1,13 @@
 import 'package:flutter/widgets.dart';
 
 class PageLoadProvider extends InheritedWidget {
-
   final String env;
 
   PageLoadProvider({
     Key key,
     this.env = 'pro',
     @required Widget child,
-  }): super(key: key, child: child);
+  }) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(PageLoadProvider oldWidget) {
@@ -17,8 +16,7 @@ class PageLoadProvider extends InheritedWidget {
 
   static String of(BuildContext context) {
     try {
-      return (context.inheritFromWidgetOfExactType(
-          PageLoadProvider) as PageLoadProvider)
+      return (context.dependOnInheritedWidgetOfExactType<PageLoadProvider>())
           .env;
     } catch (err) {
       return "pro";
