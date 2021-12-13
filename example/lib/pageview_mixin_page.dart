@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_page_tracker/flutter_page_tracker.dart';
 
 class PageViewMixinPage extends StatefulWidget {
-  PageViewMixinPage({Key key, this.title}) : super(key: key);
+  PageViewMixinPage({Key? key, this.title}) : super(key: key);
 
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -16,7 +16,7 @@ class _MyHomePageState extends State<PageViewMixinPage> with AutomaticKeepAliveC
   @override
   bool get wantKeepAlive => true;
 
-  PageController pageController;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -29,12 +29,12 @@ class _MyHomePageState extends State<PageViewMixinPage> with AutomaticKeepAliveC
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: PageViewWrapper(
-        changeDelegate: PageViewChangeDelegate(pageController),
+        changeDelegate: PageViewChangeDelegate(pageController!),
         pageAmount: 3,
-        initialPage: pageController.initialPage,
+        initialPage: pageController!.initialPage,
         child: PageView(
           controller: pageController,
           children: <Widget>[
@@ -49,10 +49,10 @@ class _MyHomePageState extends State<PageViewMixinPage> with AutomaticKeepAliveC
 }
 
 class Page extends StatefulWidget {
-  final int index;
-  final int color;
+  final int? index;
+  final int? color;
 
-  const Page({Key key, this.index, this.color}): super(key: key);
+  const Page({Key? key, this.index, this.color}): super(key: key);
 
   @override
   PageState createState() {
@@ -62,7 +62,7 @@ class Page extends StatefulWidget {
 
 class PageState extends State<Page> with PageTrackerAware, PageViewListenerMixin, PageLoadMixin {
 
-  int get pageViewIndex => widget.index;
+  int? get pageViewIndex => widget.index;
 
   @override
   void didPageView() {
@@ -85,7 +85,7 @@ class PageState extends State<Page> with PageTrackerAware, PageViewListenerMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.blue[widget.color],
+        color: Colors.blue[widget.color!],
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[

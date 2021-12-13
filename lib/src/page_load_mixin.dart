@@ -9,28 +9,28 @@ import 'package:flutter/scheduler.dart';
 // 监控页面加载时长
 mixin PageLoadMixin<T extends StatefulWidget> on State<T>, PageTrackerAware {
   // 增加页面加载时间统计
-  DateTime _firstCreateTime;  // 初始化时间
-  DateTime _firstBuildTIme;   // 首次build时间，通常为布局解析时间
-  DateTime _beginRequestTime; // 发起网络请求
-  DateTime _endRequestTime;   // 网络请求结束
-  DateTime _rebuildStartTime; // 得到请求结果后二次刷新开始的时间
-  DateTime _nextFrameTime;    // 二次刷新后，完成渲染的时间
+  DateTime? _firstCreateTime;  // 初始化时间
+  DateTime? _firstBuildTIme;   // 首次build时间，通常为布局解析时间
+  DateTime? _beginRequestTime; // 发起网络请求
+  DateTime? _endRequestTime;   // 网络请求结束
+  DateTime? _rebuildStartTime; // 得到请求结果后二次刷新开始的时间
+  DateTime? _nextFrameTime;    // 二次刷新后，完成渲染的时间
 
-  StreamSubscription<int> _httpRequestSS;
+  StreamSubscription<int?>? _httpRequestSS;
 
   @protected
-  String get httpRequestKey => null;
+  String? get httpRequestKey => null;
 
   void _didPageloaded() {
 
     // 总时间
-    Duration totalTime = _nextFrameTime.difference(_firstCreateTime);
+    Duration totalTime = _nextFrameTime!.difference(_firstCreateTime!);
     // 页面初始化时间
-    Duration buildTime = _firstBuildTIme.difference(_firstCreateTime);
+    Duration buildTime = _firstBuildTIme!.difference(_firstCreateTime!);
     // 网络请求时间
-    Duration requestTime = httpRequestKey == null ? null : _endRequestTime.difference(_beginRequestTime);
+    Duration? requestTime = httpRequestKey == null ? null : _endRequestTime!.difference(_beginRequestTime!);
     // 渲染时间
-    Duration renderTime = _nextFrameTime.difference(_rebuildStartTime);
+    Duration renderTime = _nextFrameTime!.difference(_rebuildStartTime!);
 
     if (PageLoadProvider.of(context) != 'pro') {
       Fluttertoast.showToast(msg: "加载时长：${totalTime.inMilliseconds}", fontSize: 16);
@@ -59,7 +59,7 @@ mixin PageLoadMixin<T extends StatefulWidget> on State<T>, PageTrackerAware {
     super.setState(fn);
   }
 
-  void _handleHttpRequestEvent(int type) {
+  void _handleHttpRequestEvent(int? type) {
     if (type == 0) {
       beginRequestTime();
     }
@@ -129,10 +129,10 @@ class PageLoadHttpRequestObserver {
     });
   }
 
-  static Stream<int> on(String key) {
+  static Stream<int?> on(String? key) {
     return _streamController.stream
       .where((Map event) => event['key'] == key)
-      .map<int>((Map event) => event['type']);
+      .map<int?>((Map event) => event['type']);
   }
 
   static void destroy() {

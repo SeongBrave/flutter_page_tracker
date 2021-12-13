@@ -6,12 +6,12 @@ author: DavidTang <billl89g@gmail.com>
 homepage: https://github.com/SBDavid/flutter_page_tracker
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  fluttertoast: ^7.0.0
+  fluttertoast: ^8.0.8
 
 dev_dependencies:
   flutter_test:

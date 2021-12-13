@@ -8,10 +8,10 @@ import 'page_load_mixin.dart';
 // 处理pageview组件的事件传法
 mixin PageViewListenerMixin<T extends StatefulWidget>
     on State<T>, PageTrackerAware {
-  StreamSubscription<PageTrackerEvent> sb;
+  StreamSubscription<PageTrackerEvent>? sb;
   bool isPageView = false;
   // 向列表中的列表转发页面事件
-  Set<PageTrackerAware> subscribers;
+  late Set<PageTrackerAware> subscribers;
 
   @override
   void initState() {
@@ -24,8 +24,8 @@ mixin PageViewListenerMixin<T extends StatefulWidget>
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (sb == null && pageViewIndex != null) {
-      Stream<PageTrackerEvent> stream =
-          PageViewWrapper.of(context, pageViewIndex);
+      Stream<PageTrackerEvent>? stream =
+          PageViewWrapper.of(context, pageViewIndex!);
       // 如果外围没有包裹PageViewWrapper，那么stream为null
       if (stream != null) {
         sb = stream.listen(_onPageTrackerEvent);
@@ -50,7 +50,7 @@ mixin PageViewListenerMixin<T extends StatefulWidget>
     }
   }
 
-  int get pageViewIndex => null;
+  int? get pageViewIndex => null;
 
   @override
   void didPageView() {
@@ -101,26 +101,26 @@ mixin PageViewListenerMixin<T extends StatefulWidget>
     }
   }
 
-  static PageViewListenerWrapperState of(BuildContext context) {
+  static PageViewListenerWrapperState? of(BuildContext context) {
     return context.findAncestorStateOfType<PageViewListenerWrapperState>();
   }
 }
 
 typedef onPageLoadedCallback = void Function(
-    Duration, Duration, Duration, Duration);
+    Duration, Duration, Duration?, Duration);
 
 // 列表项中还可以再次嵌套列表，所以[PageViewListenerWrapper]需要把
 class PageViewListenerWrapper extends StatefulWidget {
   final int index;
   final bool hasRequest;
-  final Widget child;
-  final VoidCallback onPageView;
-  final VoidCallback onPageExit;
-  final onPageLoadedCallback onPageLoaded;
+  final Widget? child;
+  final VoidCallback? onPageView;
+  final VoidCallback? onPageExit;
+  final onPageLoadedCallback? onPageLoaded;
 
   const PageViewListenerWrapper(
     this.index, {
-    Key key,
+    Key? key,
     this.hasRequest = false,
     this.child,
     this.onPageView,
@@ -138,7 +138,7 @@ class PageViewListenerWrapperState extends State<PageViewListenerWrapper>
     with PageTrackerAware, PageViewListenerMixin, PageLoadMixin {
   @override
   Widget build(BuildContext context) {
-    return widget.child;
+    return widget.child!;
   }
 
   @override
@@ -149,7 +149,7 @@ class PageViewListenerWrapperState extends State<PageViewListenerWrapper>
     try {
       super.didPageView();
       if (widget.onPageView != null) {
-        widget.onPageView();
+        widget.onPageView!();
       }
     } catch (err) {
       assert(() {
@@ -163,7 +163,7 @@ class PageViewListenerWrapperState extends State<PageViewListenerWrapper>
     try {
       super.didPageExit();
       if (widget.onPageExit != null) {
-        widget.onPageExit();
+        widget.onPageExit!();
       }
     } catch (err) {
       assert(() {
@@ -174,10 +174,10 @@ class PageViewListenerWrapperState extends State<PageViewListenerWrapper>
 
   @override
   void didPageLoaded(Duration totalTime, Duration buildTime,
-      Duration requestTime, Duration renderTime) {
+      Duration? requestTime, Duration renderTime) {
     try {
       if (widget.onPageLoaded != null) {
-        widget.onPageLoaded(totalTime, buildTime, requestTime, renderTime);
+        widget.onPageLoaded!(totalTime, buildTime, requestTime, renderTime);
       }
     } catch (err) {
       assert(() {

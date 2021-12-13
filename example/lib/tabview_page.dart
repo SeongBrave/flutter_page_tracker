@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_page_tracker/flutter_page_tracker.dart';
 
 class TabViewPage extends StatefulWidget {
-  TabViewPage({Key key, this.title}) : super(key: key);
+  TabViewPage({Key? key, this.title}) : super(key: key);
 
 
-  final String title;
+  final String? title;
 
   @override
   _State createState() => _State();
@@ -16,7 +16,7 @@ class _State extends State<TabViewPage> with TickerProviderStateMixin, Automatic
   @override
   bool get wantKeepAlive => true;
 
-  TabController tabController;
+  TabController? tabController;
 
   @override
   void initState() {
@@ -91,7 +91,7 @@ class _State extends State<TabViewPage> with TickerProviderStateMixin, Automatic
     super.build(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title!),
         ),
         body: SafeArea(
           child: Container(
@@ -102,7 +102,7 @@ class _State extends State<TabViewPage> with TickerProviderStateMixin, Automatic
                 PageViewWrapper(
                   pageAmount: 3,
                   initialPage: 0,
-                  changeDelegate: TabViewChangeDelegate(tabController),
+                  changeDelegate: TabViewChangeDelegate(tabController!),
                   child: TabBarView(
                     controller: tabController,
                     children: <Widget>[

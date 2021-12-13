@@ -4,7 +4,7 @@ import 'dart:math';
 
 class PopupPage extends StatelessWidget {
   const PopupPage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   Widget _button(String text, VoidCallback onTap) {

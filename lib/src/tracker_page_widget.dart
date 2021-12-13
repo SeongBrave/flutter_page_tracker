@@ -7,7 +7,7 @@ class TrackerPageWidget extends StatefulWidget {
 
   final Widget child;
 
-  const TrackerPageWidget({Key key, this.child}):
+  const TrackerPageWidget({Key? key, required this.child}):
       assert(child != null),
       super(key: key);
 

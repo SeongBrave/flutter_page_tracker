@@ -4,10 +4,10 @@ import 'package:flutter_page_tracker/flutter_page_tracker.dart';
 import 'pageview_wrapper_page.dart';
 
 class PageviewInTabviewPage extends StatefulWidget {
-  PageviewInTabviewPage({Key key, this.title}) : super(key: key);
+  PageviewInTabviewPage({Key? key, this.title}) : super(key: key);
 
 
-  final String title;
+  final String? title;
 
   @override
   _State createState() => _State();
@@ -18,8 +18,8 @@ class _State extends State<PageviewInTabviewPage> with TickerProviderStateMixin,
   @override
   bool get wantKeepAlive => true;
 
-  TabController tabController;
-  PageController pageController;
+  TabController? tabController;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -145,7 +145,7 @@ class _State extends State<PageviewInTabviewPage> with TickerProviderStateMixin,
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          title: Text(widget.title!),
         ),
         body: SafeArea(
           child: Stack(
@@ -154,7 +154,7 @@ class _State extends State<PageviewInTabviewPage> with TickerProviderStateMixin,
               PageViewWrapper(
                 pageAmount: 3,
                 initialPage: 0,
-                changeDelegate: TabViewChangeDelegate(tabController),
+                changeDelegate: TabViewChangeDelegate(tabController!),
                 child: TabBarView(
                   physics: NeverScrollableScrollPhysics(),
                   controller: tabController,
@@ -171,9 +171,9 @@ class _State extends State<PageviewInTabviewPage> with TickerProviderStateMixin,
                             // print("tabbar pageexit 0");
                           },
                           child: PageViewWrapper(
-                            changeDelegate: PageViewChangeDelegate(pageController),
+                            changeDelegate: PageViewChangeDelegate(pageController!),
                             pageAmount: 3,
-                            initialPage: pageController.initialPage,
+                            initialPage: pageController!.initialPage,
                             child: PageView(
                               controller: pageController,
                               children: <Widget>[

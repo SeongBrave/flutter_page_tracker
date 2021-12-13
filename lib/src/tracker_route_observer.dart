@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'page_tracker_aware.dart';
 
-class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
+class TrackerStackObserver<R extends Route<dynamic>?> extends NavigatorObserver {
 
   // 存放路由堆栈
-  final List<Route> routes = [];
-  final List<Route> routesPopup = [];
+  final List<Route?> routes = [];
+  final List<Route?> routesPopup = [];
   // 每个页面对应的监听
   final Map<R, Set<PageTrackerAware>> _listeners = <R, Set<PageTrackerAware>>{};
   final Map<R, Set<PageTrackerAware>> _listenersPopup = <R, Set<PageTrackerAware>>{};
@@ -34,26 +34,26 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
     assert(pageTrackerAware != null);
 
     for (R route in _listeners.keys) {
-      final Set<PageTrackerAware> subscribers = _listeners[route];
+      final Set<PageTrackerAware>? subscribers = _listeners[route];
       subscribers?.remove(pageTrackerAware);
     }
 
     for (R route in _listenersPopup.keys) {
-      final Set<PageTrackerAware> subscribers = _listenersPopup[route];
+      final Set<PageTrackerAware>? subscribers = _listenersPopup[route];
       subscribers?.remove(pageTrackerAware);
     }
   }
 
   @override
-  void didPush(Route route, Route previousRoute) {
+  void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
 
     // 之后正常页面（非弹窗）入栈之后，才会触发前一个页面的离开
     if (route is PageRoute) {
       // 触发PageExit事件
       if (routes.length > 0) {
-        R previousRoute = routes.last;
-        final Set<PageTrackerAware> previousSubscribers = _listeners[previousRoute];
+        R? previousRoute = routes.last as R?;
+        final Set<PageTrackerAware>? previousSubscribers = _listeners[previousRoute!];
         if (previousSubscribers != null) {
           for (PageTrackerAware pageTrackerAware in previousSubscribers) {
             pageTrackerAware.didPageExit();
@@ -78,12 +78,12 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
   }
 
   @override
-  void didPop(Route route, Route previousRoute) {
+  void didPop(Route route, Route? previousRoute) {
     super.didPop(route, previousRoute);
 
     if (route is PageRoute) {
       // 触发PageExit
-      final Set<PageTrackerAware> subscribers = _listeners[route];
+      final Set<PageTrackerAware>? subscribers = _listeners[route as R];
       if (subscribers != null) {
         for (PageTrackerAware pageTrackerAware in subscribers) {
           pageTrackerAware.didPageExit();
@@ -95,8 +95,8 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
 
       // 触发PageView
       if (routes.length > 0) {
-        R previousRoute = routes.last;
-        final Set<PageTrackerAware> previousSubscribers = _listeners[previousRoute];
+        R? previousRoute = routes.last as R?;
+        final Set<PageTrackerAware>? previousSubscribers = _listeners[previousRoute!];
         if (previousSubscribers != null) {
           Future.microtask(() {
             for (PageTrackerAware pageTrackerAware in previousSubscribers) {
@@ -107,7 +107,7 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
       }
     } else if (route is PopupRoute) {
       // 触发PageExit
-      final Set<PageTrackerAware> subscribers = _listenersPopup[route];
+      final Set<PageTrackerAware>? subscribers = _listenersPopup[route as R];
       if (subscribers != null) {
         for (PageTrackerAware pageTrackerAware in subscribers) {
           pageTrackerAware.didPageExit();
@@ -120,7 +120,7 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
   }
 
   @override
-  void didRemove(Route route, Route previousRoute) {
+  void didRemove(Route route, Route? previousRoute) {
     super.didRemove(route, previousRoute);
 
     if (route is PageRoute) {
@@ -131,7 +131,7 @@ class TrackerStackObserver<R extends Route<dynamic>> extends NavigatorObserver {
   }
 
   @override
-  void didReplace({Route newRoute, Route oldRoute}) {
+  void didReplace({Route? newRoute, Route? oldRoute}) {
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
 
     if (oldRoute is PageRoute) {

@@ -11,6 +11,6 @@ abstract class PageTrackerAware {
     isActive = false;
   }
 
-  void didPageLoaded(Duration totalTime, Duration buildTime, Duration requestTime, Duration renderTime) { }
+  void didPageLoaded(Duration totalTime, Duration buildTime, Duration? requestTime, Duration renderTime) { }
 
 }

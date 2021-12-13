@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_page_tracker/flutter_page_tracker.dart';
 
 class PageViewWrapperPage extends StatefulWidget {
-  PageViewWrapperPage({Key key, this.title}) : super(key: key);
+  PageViewWrapperPage({Key? key, this.title}) : super(key: key);
 
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -16,7 +16,7 @@ class _MyHomePageState extends State<PageViewWrapperPage> with AutomaticKeepAliv
   @override
   bool get wantKeepAlive => true;
 
-  PageController pageController;
+  PageController? pageController;
 
   @override
   void initState() {
@@ -89,12 +89,12 @@ class _MyHomePageState extends State<PageViewWrapperPage> with AutomaticKeepAliv
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: PageViewWrapper(
-        changeDelegate: PageViewChangeDelegate(pageController),
+        changeDelegate: PageViewChangeDelegate(pageController!),
         pageAmount: 3,
-        initialPage: pageController.initialPage,
+        initialPage: pageController!.initialPage,
         child: PageView(
           controller: pageController,
           children: <Widget>[
